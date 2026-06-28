@@ -4,8 +4,9 @@ import { Pool } from "pg"
 import { PrismaPg } from "@prisma/adapter-pg"
 import { PrismaClient } from "./generated/prisma/client"
 import jwt from "jsonwebtoken"
+import { envFiles } from "./env.ts"
 
-const pool = new Pool({ connectionString: process.env.DATABASE_URL })
+const pool = new Pool({ connectionString: envFiles.databaseUrl })
 const adapter = new PrismaPg(pool)
 const prisma = new PrismaClient({ adapter })
 
@@ -49,7 +50,7 @@ app.post("signin", async (req, res) => {
 
   const token = jwt.sign({
     username: userExists.username
-  }, process.env.JWT_SECRET)
+  }, envFiles.jwtSecret)
 
   res.status(200).json({ token })
 })
