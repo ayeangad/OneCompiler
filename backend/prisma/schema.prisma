@@ -8,7 +8,16 @@ datasource db {
 }
 
 model User {
-  id       Int     @id @default(autoincrement())
-  username String? @unique
-  password String?
+  id         String       @id @default(uuid())
+  username   String       @unique
+  password   String
+  submission Submission[]
+}
+
+model Submission {
+  id       String  @id @default(uuid())
+  user     User    @relation(fields: [userId], references: [id])
+  userId   String
+  code     String?
+  language String
 }
