@@ -8,7 +8,8 @@ const client = createClient()
 client.connect()
   .then(async () => {
     while (1) {
-      const response = await client.rPop("processing")
+      console.log("running users code")
+      const response = await client.rPop("problems")
       if (!response) {
         await new Promise((r) => setTimeout(r, 1000))
         continue;
@@ -19,7 +20,9 @@ client.connect()
       const language = parsedResponse.language
 
       if (language === "js") {
-        const filePath = __dirname + "./code/a.js"
+        console.log("running js code")
+        await new Promise((r) => setTimeout(r, 1000))
+        const filePath = __dirname + "/code/a.js"
         fs.writeFileSync(filePath, code)
         const response = spawn("node", [filePath])
         response.stdout.on("data", (chunk) => {
@@ -28,8 +31,6 @@ client.connect()
 
 
       }
-
-
 
     }
   })
